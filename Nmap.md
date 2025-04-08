@@ -1,5 +1,3 @@
-![nmap-logo-256x256-1.png](attachment:5cb64e15-e527-41ae-89ea-2e57b0cc6a93:nmap-logo-256x256-1.png)
-
 Basic Syntax
 
 ```jsx
