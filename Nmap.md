@@ -272,6 +272,67 @@ sudo nmap 10.129.2.0/24 -F --min-rate 300
 - `T 4` / `T aggressive`
 - `T 5` / `T insane`
 
+# FIREWALL STUFF
+
+### SYN-Scan (normal port scan)
+
+```jsx
+sudo nmap 10.129.2.28 -p 21,22,25 -sS -Pn -n --disable-arp-ping --packet-trace
+```
+
+### ACK-Scan (checks if port is filtered by a firewall or unfiltered)
+
+```jsx
+sudo nmap 10.129.2.28 -p 21,22,25 -sA -Pn -n --disable-arp-ping --packet-trace
+```
+
+| **Scanning Options** | **Description** |
+| --- | --- |
+| `-sS` | Performs SYN scan on specified ports. |
+| `-sA` | Performs ACK scan on specified ports. |
+| `-Pn` | Disables ICMP Echo requests. |
+| `-n` | Disables DNS resolution. |
+| `--disable-arp-ping` | Disables ARP ping. |
+| `--packet-trace` | Shows all packets sent and received. |
+
+### Scan by Using Decoys
+
+```jsx
+sudo nmap 10.129.2.28 -p 80 -sS -Pn -n --disable-arp-ping --packet-trace -D RND:5
+```
+
+| `-D RND:5` | Generates five random IP addresses that indicates the source IP the connection comes from. |
+| --- | --- |
+
+### Scan by Using Different Source IP
+
+```jsx
+sudo nmap 10.129.2.28 -n -Pn -p 445 -O -S 10.129.2.200 -e tun0
+```
+
+| `-O` | Performs operation system detection scan. |
+| --- | --- |
+| `-S` | Scans the target by using different source IP address. |
+| `10.129.2.200` | Specifies the source IP address. |
+| `-e tun0` | Sends all requests through the specified interface. |
+
+### DNS Proxying
+
+### SYN-Scan From DNS Port
+
+```jsx
+sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
+```
+
+| `--source-port 53` | Performs the scans from specified source port. |
+| --- | --- |
+
+### Connect To The Filtered Port
+
+```jsx
+ncat -nv --source-port 53 10.129.2.28 50000
+```
+
 ### Extras
 
 `grep for`: This command filters the input, selecting only those lines that contain the string "for.”
