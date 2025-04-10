@@ -1,0 +1,26 @@
+
+# Identifying hashes
+
+```
+$1$  : MD5
+$2a$ : Blowfish
+$2y$ : Blowfish, with correct handling of 8 bit characters
+$5$  : SHA256
+$6$  : SHA512
+```
+
+### Identify Hash with Hashid
+
+```bash
+ hashid '$apr1$71850310$gh9m4xcAn3MGxogwX/ztb.’
+```
+
+```bash
+hashid hashes.txt 
+```
+
+### Identifying Hashcat mode with Hashid
+
+```bash
+hashid '$DCC2$10240#tom#e4e938d12fe5974dc42a90120bd9c90f' -m
+```
