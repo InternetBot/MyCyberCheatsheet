@@ -1,9 +1,7 @@
-# passwords
+#PJPT Commands
 
-$$
 
-\huge Attacking Active Directory: Initial Attack Vectors
-$$
+$$Attacking Active Directory: Initial Attack Vectors$$
 
 ### LLMNR Poisoning
 
@@ -656,10 +654,7 @@ DCOwners-Users.html                          index.html                         
 firefox index.html  
 ```
 
-$$
-
-\huge Attacking Active Directory: Post Compromise Attack
-$$
+$$Attacking Active Directory: Post Compromise Attack$$
 
 ## Pass Attacks
 
